@@ -25,6 +25,7 @@ public class TimelineActivity extends Activity {
 				ListView lvTweets = (ListView)findViewById(R.id.lvTweets);
 				TweetsAdapter adapter = new TweetsAdapter(getBaseContext(), tweets);
 				lvTweets.setAdapter(adapter);
+				Log.d("DEBUG",jsonTweets.toString());
 			}
 		});
 	}

@@ -40,6 +40,11 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
         TextView bodyView = (TextView) view.findViewById(R.id.tvBody);
         bodyView.setText(Html.fromHtml(tweet.getBody()));
         
+        TextView timeView = (TextView) view.findViewById(R.id.tvTimestamp);
+        String formattedTime = " <small><font color='#777777'>" + tweet.getTimestamp() +
+        		"</font></small>";
+        timeView.setText(Html.fromHtml(formattedTime));
+        
         return view;
 	}
 

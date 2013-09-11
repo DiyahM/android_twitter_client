@@ -1,9 +1,14 @@
 package com.codepath.apps.diyahtwitterapp;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
-public class User extends BaseModel {
-    public String getName() {
+public class User extends BaseModel implements Serializable {
+   
+	private static final long serialVersionUID = 7335213347264465097L;
+
+	public String getName() {
         return getString("name");
     }
 

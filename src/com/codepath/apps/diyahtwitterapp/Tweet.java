@@ -1,17 +1,26 @@
 package com.codepath.apps.diyahtwitterapp;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-public class Tweet extends BaseModel {
-    private User user;
+public class Tweet extends BaseModel implements Serializable {
+ 
+	private static final long serialVersionUID = 5404558285222039470L;
+	
+	private User user;
 
     public User getUser() {
         return user;
+    }
+    
+    
+    public void setUser(User user) {
+    	this.user = user;
     }
 
     public String getBody() {
@@ -45,6 +54,7 @@ public class Tweet extends BaseModel {
         }
         return tweet;
     }
+    
 
     public static ArrayList<Tweet> fromJson(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());

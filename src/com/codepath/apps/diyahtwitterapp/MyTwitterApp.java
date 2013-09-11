@@ -2,6 +2,7 @@ package com.codepath.apps.diyahtwitterapp;
 
 import android.content.Context;
 
+import com.activeandroid.ActiveAndroid;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -21,7 +22,9 @@ public class MyTwitterApp extends com.activeandroid.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        
         MyTwitterApp.context = this;
+
         
         // Create global configuration and initialize ImageLoader with this configuration
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().

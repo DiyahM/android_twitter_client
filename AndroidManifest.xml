@@ -22,7 +22,7 @@
             android:value="RestClient.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="1" />
+            android:value="2" />
 
         <activity
             android:name="com.codepath.apps.diyahtwitterapp.LoginActivity"
@@ -46,6 +46,10 @@
         <activity
             android:name="com.codepath.apps.diyahtwitterapp.TimelineActivity"
             android:label="@string/title_activity_timeline" >
+        </activity>
+        <activity
+            android:name="com.codepath.apps.diyahtwitterapp.ComposeActivity"
+            android:label="@string/title_activity_compose" >
         </activity>
     </application>
 

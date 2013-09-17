@@ -37,6 +37,13 @@ public class TwitterClient extends OAuthBaseClient {
     	client.get(url, new RequestParams("count", "25"), handler);
     	
     }
+    public void getHomeTimeline(AsyncHttpResponseHandler handler, String maxId) {
+    	String url = getApiUrl("statuses/home_timeline.json");
+    	RequestParams requestParams = new RequestParams("count", "25");
+    	requestParams.put("max_id", maxId);
+    	client.get(url, requestParams, handler);
+    	
+    }
     
     public void getUserCredentials(AsyncHttpResponseHandler handler) {
     	String url = "https://api.twitter.com/1.1/account/verify_credentials.json";

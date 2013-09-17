@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,26 +27,53 @@ public class TimelineActivity extends Activity {
 	ListView lvTweets;
 	TweetsAdapter adapter;
 	UserModel currentUser;
+	TwitterClient twitter;
+	SharedPreferences pref;
+	Editor edit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timeline);
-		SharedPreferences pref = getSharedPreferences("myPrefs", MODE_PRIVATE);
+		pref = getSharedPreferences("myPrefs", MODE_PRIVATE);
 		currentUser = new Select()
 		                  .from(UserModel.class)
 		                  .where("Id = ?", pref.getString("current_user", null))
 		                  .executeSingle();
 		setTitle("@" + currentUser.getScreenName());
-		MyTwitterApp.getRestClient().getHomeTimeline(new JsonHttpResponseHandler () {
+		twitter = MyTwitterApp.getRestClient();
+		twitter.getHomeTimeline(new JsonHttpResponseHandler () {
 			@Override
 			public void onSuccess(JSONArray jsonTweets) {
 				tweets = Tweet.fromJson(jsonTweets);
+				edit = pref.edit();
+				edit.putLong("max_id", tweets.get(0).getId()-1);
+				edit.commit();
 				lvTweets = (ListView)findViewById(R.id.lvTweets);
 				adapter = new TweetsAdapter(getBaseContext(), tweets);
 				lvTweets.setAdapter(adapter);
+				
+				lvTweets.setOnScrollListener(new EndlessScrollListener() {
+				    @Override
+				    public void loadMore(int page, int totalItemsCount) {
+			          Log.d("DEBUG", "load more " + String.valueOf(page) + " " + String.valueOf(totalItemsCount));
+			          getMoreTweets();
+				    }
+			    });
 			}
 		});
+	}
+	
+	public void getMoreTweets(){
+		twitter.getHomeTimeline(new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONArray jsonTweets) {
+				adapter.addAll(Tweet.fromJson(jsonTweets));
+				edit.putLong("max_id", tweets.get(0).getId()-1);
+				edit.commit();	
+			}
+		}, String.valueOf(pref.getLong("max_id", -1)));
+		
 	}
 
 	@Override

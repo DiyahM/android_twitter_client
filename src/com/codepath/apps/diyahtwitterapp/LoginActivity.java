@@ -51,6 +51,8 @@ public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 				Editor edit = pref.edit();
 				edit.putString("current_user", currentUser.getId().toString());
 				edit.commit();
+				Intent i = new Intent(getBaseContext(), TimelineActivity.class);
+		    	startActivity(i);
 			}
 			
 			@Override
@@ -58,8 +60,7 @@ public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 				Log.d("DEBUG", "error" + response.toString());
 			}
 		});
-    	Intent i = new Intent(this, TimelineActivity.class);
-    	startActivity(i);
+    	
     }
     
     // OAuth authentication flow failed, handle the error

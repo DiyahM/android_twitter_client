@@ -1,35 +1,38 @@
 package com.codepath.apps.diyahtwitterapp;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.activeandroid.query.Select;
+import com.codepath.apps.diyahtwitterapp.fragments.HomeTimelineFragment;
+import com.codepath.apps.diyahtwitterapp.fragments.MentionsFragment;
 import com.codepath.apps.diyahtwitterapp.models.UserModel;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class TimelineActivity extends Activity {
+public class TimelineActivity extends FragmentActivity implements TabListener{
 
 	private static final int REQUEST_CODE = 0;
-	ArrayList<Tweet> tweets;
+	
 	ListView lvTweets;
 	TweetsAdapter adapter;
 	UserModel currentUser;
 	TwitterClient twitter;
 	SharedPreferences pref;
 	Editor edit;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,40 +44,28 @@ public class TimelineActivity extends Activity {
 		                  .where("Id = ?", pref.getString("current_user", null))
 		                  .executeSingle();
 		setTitle("@" + currentUser.getScreenName());
-		twitter = MyTwitterApp.getRestClient();
-		twitter.getHomeTimeline(new JsonHttpResponseHandler () {
-			@Override
-			public void onSuccess(JSONArray jsonTweets) {
-				tweets = Tweet.fromJson(jsonTweets);
-				edit = pref.edit();
-				edit.putLong("max_id", tweets.get(0).getId()-1);
-				edit.commit();
-				lvTweets = (ListView)findViewById(R.id.lvTweets);
-				adapter = new TweetsAdapter(getBaseContext(), tweets);
-				lvTweets.setAdapter(adapter);
-				
-				lvTweets.setOnScrollListener(new EndlessScrollListener() {
-				    @Override
-				    public void loadMore(int page, int totalItemsCount) {
-			          Log.d("DEBUG", "load more " + String.valueOf(page) + " " + String.valueOf(totalItemsCount));
-			          getMoreTweets();
-				    }
-			    });
-			}
-		});
+		setupNavigationTabs();
 	}
 	
-	public void getMoreTweets(){
-		twitter.getHomeTimeline(new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(JSONArray jsonTweets) {
-				adapter.addAll(Tweet.fromJson(jsonTweets));
-				edit.putLong("max_id", tweets.get(0).getId()-1);
-				edit.commit();	
-			}
-		}, String.valueOf(pref.getLong("max_id", -1)));
+	
+
+	private void setupNavigationTabs() {
+		ActionBar actionBar= getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayShowTitleEnabled(true);
+		Tab tabHome= actionBar.newTab().setText("Home")
+				.setTag("HomeTimelineFragment").setIcon(R.drawable.ic_home)
+				.setTabListener(this);
+		Tab tabMentions = actionBar.newTab().setText("Mentions")
+				.setTag("MentionsFragment").setIcon(R.drawable.ic_mentions)
+				.setTabListener(this);
+		actionBar.addTab(tabHome);
+		actionBar.addTab(tabMentions);
+		actionBar.selectTab(tabHome);
 		
 	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,6 +93,37 @@ public class TimelineActivity extends Activity {
 		}
 
 	  }
+	}
+
+
+
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		
+		
+	}
+
+
+
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		FragmentManager manager = getSupportFragmentManager();
+		android.support.v4.app.FragmentTransaction fts = manager.beginTransaction();
+		if (tab.getTag() == "HomeTimelineFragment") {
+			fts.replace(R.id.frame_container, new HomeTimelineFragment());
+		} else {
+			fts.replace(R.id.frame_container, new MentionsFragment());
+		}
+		fts.commit();
+		
+	}
+
+
+
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		
+		
 	} 
 	
 

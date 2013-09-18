@@ -58,10 +58,13 @@ public abstract class EndlessScrollListener implements OnScrollListener {
 			loadMore(currentPage + 1, totalItemCount);
 			loading = true;
 		}
+		
+		
 	}
 
 	// Defines the process for actually loading more data based on page
 	public abstract void loadMore(int page, int totalItemsCount);
+	
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {

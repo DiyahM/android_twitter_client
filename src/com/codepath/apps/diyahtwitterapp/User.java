@@ -11,6 +11,10 @@ public class User extends BaseModel implements Serializable {
 	public String getName() {
         return getString("name");
     }
+	
+	public String getTagline() {
+		return getString("description");
+	}
 
     public long getId() {
         return getLong("id");

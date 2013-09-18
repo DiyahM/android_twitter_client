@@ -69,4 +69,8 @@ public class TweetsListFragment extends Fragment {
 		}, String.valueOf(pref.getLong("max_id", -1)));
 		
 	}
+	
+	public void onUserProfileView(View v) {
+		Log.d("DEBUG", "Tweet Frag HAHA");
+	}
 }

@@ -13,8 +13,10 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.activeandroid.query.Select;
@@ -125,6 +127,13 @@ public class TimelineActivity extends FragmentActivity implements TabListener{
 		
 		
 	} 
+	
+	public void onProfileView(MenuItem mi) {
+		
+		Intent i = new Intent(this, ProfileActivity.class);
+		startActivity(i);
+	}
+	
 	
 
 }

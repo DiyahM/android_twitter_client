@@ -1,13 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item 
-        android:id="@drawable/ic_action_compose"
-        android:title="Compose" 
-        android:orderInCategory="100" 
-        android:visible="true" 
-        android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_compose"
-        android:onClick="onCompose">
-        
-    </item>
-
+    <item android:id="@+id/item1" android:icon="@drawable/ic_action_compose" android:visible="true" android:orderInCategory="100" android:title="Compose" android:showAsAction="ifRoom" android:onClick="onCompose"></item>
+    <item android:id="@+id/item2" android:icon="@drawable/ic_profile" android:showAsAction="ifRoom" android:onClick="onProfileView" android:visible="true" android:orderInCategory="100" android:title="Profile"></item>
+   
 </menu>

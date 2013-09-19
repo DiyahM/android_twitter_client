@@ -43,34 +43,14 @@ public class TweetsListFragment extends Fragment {
 		adapter = new TweetsAdapter(getActivity(), tweets);
 		lvTweets.setAdapter(adapter);
 		
-		lvTweets.setOnScrollListener(new EndlessScrollListener() {
-		    @Override
-		    public void loadMore(int page, int totalItemsCount) {
-	          Log.d("DEBUG", "load more " + String.valueOf(page) + " " + String.valueOf(totalItemsCount));
-	          getMoreTweets();
-		    }
-		    
-		    
-	    });
+		
+		
+		
+		
 	}
 	
 	public TweetsAdapter getAdapter() {
 		return adapter;
 	}
 	
-	public void getMoreTweets(){
-		twitter.getHomeTimeline(new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(JSONArray jsonTweets) {
-				adapter.addAll(Tweet.fromJson(jsonTweets));
-				edit.putLong("max_id", tweets.get(0).getId()-1);
-				edit.commit();	
-			}
-		}, String.valueOf(pref.getLong("max_id", -1)));
-		
-	}
-	
-	public void onUserProfileView(View v) {
-		Log.d("DEBUG", "Tweet Frag HAHA");
-	}
 }
